@@ -1,3 +1,3 @@
 # RecyclerViewWithFilter
 
-Basic proejct shows how to do filter in a recyclerview.
+Basic project shows how to do filter in a recyclerview.
