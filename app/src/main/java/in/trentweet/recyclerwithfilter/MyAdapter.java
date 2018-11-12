@@ -2,6 +2,7 @@ package in.trentweet.recyclerwithfilter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,10 +23,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private ArrayList<String> photos = new ArrayList<>();
     private LayoutInflater layoutInflater;
     private Context _context;
+    MainActivity _mainActivity;
 
-    public MyAdapter(Context context, List<CountryModel> modelList) {
+    public MyAdapter(Context context, List<CountryModel> modelList, MainActivity mainActivity) {
         this.modelList = modelList;
         _context = context;
+        _mainActivity = mainActivity;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         photos.add("http://icons.iconarchive.com/icons/danieledesantis/playstation-flat/256/playstation-circle-icon.png");
         photos.add("https://cdn1.iconfinder.com/data/icons/ui-5/502/speech-512.png");
@@ -38,12 +41,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        CardView cardView;
         ImageView img_flag;
         TextView txtCountryName, txtNativeName, txtCountryCapital;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            cardView = itemView.findViewById(R.id.cardView);
             img_flag = itemView.findViewById(R.id.img_flag);
             txtCountryName = itemView.findViewById(R.id.txtCountryName);
             txtNativeName = itemView.findViewById(R.id.txtNativeName);
@@ -60,7 +65,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int position) {
+        CardView cardView = viewHolder.cardView;
         ImageView img_flag = viewHolder.img_flag;
         TextView txtCountryName = viewHolder.txtCountryName,
                 txtNativeName = viewHolder.txtNativeName,
@@ -74,6 +80,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         txtCountryName.setText(modelList.get(position).getCountryName());
         txtNativeName.setText(modelList.get(position).getCountryNativeName());
         txtCountryCapital.setText(modelList.get(position).getCountryCapitalName());
+
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                modelList.remove(position);
+                _mainActivity.setText("Left: " + modelList.size());
+                notifyDataSetChanged();
+            }
+        });
 
     }
 

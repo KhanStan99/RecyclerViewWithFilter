@@ -65,6 +65,10 @@ public class MainActivity extends AppCompatActivity {
         adapter.updateList(temp);
     }
 
+    public void setText(String text){
+        etSearch.setText(text);
+    }
+
     private void getCountryNamesList() {
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET,
                 "https://restcountries.eu/rest/v2/all", null, new Response.Listener<JSONArray>() {
@@ -80,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                             response.optJSONObject(i).optString("flag")));
                 }
 
-                adapter = new MyAdapter(getApplicationContext(), model);
+                adapter = new MyAdapter(getApplicationContext(), model, MainActivity.this);
                 RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
                 recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(),
